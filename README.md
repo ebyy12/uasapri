@@ -116,84 +116,59 @@ plt.show()
 ```
 ![image](https://github.com/ebyy12/uasapri/assets/148988993/747ffab5-791d-49c5-a7a6-a991e79b3e87)
 
+kita juga bisa melihat persentase pembelian perbulan nya stelah kita mensplit format tanggal nya
+```bash
+df['Date'] = pd.to_datetime(df['Date'])
+```
+```bash
+df['date'] = df['Date'].dt.date
+
+df['month'] = df['Date'].dt.month
+df['month'] = df['month'].replace((1,2,3,4,5,6,7,8,9,10,11,12),
+                                          ('January','February','March','April','May','June','July','August',
+                                          'September','October','November','December'))
+
+df['weekday'] = df['Date'].dt.weekday
+df['weekday'] = df['weekday'].replace((0,1,2,3,4,5,6),
+                                          ('Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'))
+
+df.drop('Date', axis = 1, inplace = True)
+```
+Jika sudah di split tinggal masukan
+```bash
+months = df.groupby('month')['Member_number'].count()
+pie, ax = plt.subplots(figsize=[10,6])
+plt.pie(x=months, autopct="%.1f%%", explode=[0.05]*12, labels=months.keys(), pctdistance=0.5)
+plt.title("Items bought split by month", fontsize=14)
+```
+![image](https://github.com/ebyy12/uasapri/assets/148988993/02ba3ebe-745a-4e76-ae94-03b379bae67b)
+
+Lalu kita bisa lihat penjualan harianya 
+```bash
+plt.figure(figsize=(12,5))
+sns.barplot(x=days.keys(), y=days)
+plt.xlabel('Week Day', size = 15)
+plt.ylabel('Orders per day', size = 15)
+plt.title('Number of orders received each day', color = 'blue', size = 15)
+plt.show()
+```
+![image](https://github.com/ebyy12/uasapri/assets/148988993/f4dceee9-a10d-45c6-a111-1d09ca790df8)
+
+
+
 
 ## Modeling
-
-Model regresi logistik adalah sebuah jenis model statistik yang digunakan untuk menganalisis hubungan antara satu atau lebih variabel independen (prediktor) dengan variabel dependen biner (dua kategori, seperti ya/tidak, sukses/gagal, atau positif/negatif).
-
-- Sebelumnya mari kita import library yang nanti akan digunakan,
-
-``` bash
-from sklearn.model_selection import train_test_split
-from sklearn.linear_model import LogisticRegression
+Selanjutnya kita lanjutkan modeling 
+```bash
+df['itemDescription'] = df.groupby(['Member_number', 'date'])['itemDescription'].transform(lambda x: ','.join(x))
 ```
-
-- Langkah pertama adalah memasukan kolom-kolom fitur yang ada di datasets dan juga kolom targetnya,
-
-``` bash
-X = df.drop (columns='output', axis=1)
-Y = df['output']
+lalu kita bagi item yang disatukan oleh coma
+```bash
+lst=[]
+for i in range(0,len(df)-1):
+    data = df['itemDescription'][i].split(',')
+    lst.append(data)
 ```
-
-- Pembagian X dan Y menjadi train dan testnya masing-masing,
-``` bash
-X_train, X_test, Y_train, Y_test = train_test_split(X, Y, stratify=Y, random_state=2)
-```
-
-- Mari kita lanjut dengan membuat model,
-
-``` bash
-model = LogisticRegression()
-```
-
-- Mari lanjut, memasukkan x_train dan y_train pada model dan memasukan X_train_pred,
-
-``` bash
-model.fit(X_train, Y_train)
-X_train_pred = model.predict(X_train)
-```
-
-- Sekarang kita bisa melihat akurasi dari model kita,
-
-``` bash
-training_data_accuracy = accuracy_score(X_train_pred, Y_train)
-print('akurasi : ', training_data_accuracy)
-```
-
-- Akurasi modelnya yaitu 83%, selanjutnya mari kita test menggunakan sebuah array value, 
-
-``` bash
-input_data = (63, 1, 3, 145, 233, 1, 0, 150, 0, 2.3, 0, 0, 1)
-input_data_np = np.array(input_data)
-input_data_reshape = input_data_np.reshape(1,-1)
-
-std_data = scaler.transform(input_data_reshape)
-
-prediksi = model.predict(std_data)
-print(prediksi)
-
-if(prediksi[0] == 1 ):
-    print("Positif")
-else:
-    print('Negatif')
-```
-
-- Sekarang modelnya sudah selesai, mari kita export sebagai file sav agar nanti bisa kita gunakan pada project web streamlit kita,
-
-``` bash
-import pickle
-
-filename = 'PrediksiHeart.sav'
-pickle.dump(model, open(filename,'wb'))
-```
-
-- Mari lanjut, memasukkan x_train dan y_train pada model dan memasukkan value predict pada y_pred,
-
-``` bash
-from sklearn.model_selection import train_test_split
-X_train, X_test, Y_train, Y_test = train_test_split(X, Y, stratify=Y, random_state=2)
-```
-
 ## Evaluation
 
 Metrik yang digunakan yaitu metrik akurasi.
