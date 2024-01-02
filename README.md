@@ -43,53 +43,79 @@ Dataset ini memiliki 38.765 baris dari pesanan pembelian orang-orang dari toko k
 - itemDescription : Deskripsi Item
 
 ## Data Preparation
-
-## Data Collection
-
-Untuk data collection ini, saya mendapatkan dataset yang nantinya digunakan dari website kaggle dengan nama Heart Attack Analysis & Prediction Dataset jika Anda tertarik dengan datasetnya, Anda bisa click link diatas.
-
-## Data Discovery And Profilling
-
 Untuk bagian ini, kita akan menggunakan teknik EDA.
-Pertama kita mengimport semua library yang dibutuhkan,
+Pertama kita mengimport semua library yang dibutuhkan
 
 ``` bash 
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
+import networkx as nx
+import warnings
+warnings.filterwarnings('ignore')
+from mlxtend.frequent_patterns import association_rules, apriori
+from mlxtend.preprocessing import TransactionEncoder
 ``` 
 
-- Karena kita menggunakan vscode untuk mengerjakan maka file lokal harus berada di direktori yang sama,
+Selanjutnya kita mount dataset nya
 
 ``` bash 
-df = pd.read_csv('heart.csv')
-df.head()
+df=pd.read_csv('/content/groceries-dataset/Groceries_dataset.csv')
 ``` 
-
-- Lalu tipe data dari masing-masing kolom, kita bisa menggunakan properti info,
+Lalu tipe data dari masing-masing kolom, kita bisa menggunakan properti info,
 
 ``` bash 
 df.info()
 ```
 
+selanjutnya kita coba visualkan datanya agar mudah tebaca
+```bash
+top_10_item = df['itemDescription'].value_counts().nlargest(10)
 
-- Selanjutnya kita akan memeriksa apakah dataset tersebut terdapat baris yang kosong atau null dengan menggunakan seaborn,
-
-``` bash 
-sns.heatmap(df.isnull())
+plt.figure(figsize=(8, 8))
+plt.pie(top_10_item, labels=top_10_item.index, autopct='%1.1f%%', startangle=90)
+plt.title('Top 10 Produk Terlaris')
+plt.show()
 ```
-![Alt text](output.png) <br>
+![image](https://github.com/ebyy12/uasapri/assets/148988993/4ca1f750-6548-4024-8cb8-c7c79de17d5d)
 
-- Selanjutnya mari kita lanjutkan dengan data exploration,
+atau kita bisa lihat jumlah eksaknya
+```bash
+plt.figure(figsize = (15,5))
+bars = plt.bar(x = np.arange(len(freq.head(10))), height = (freq).head(10))
+plt.bar_label(bars, fontsize=12, color='cyan', label_type = 'center')
+plt.xticks(ticks = np.arange(len(freq.head(10))), labels = freq.index[:10])
 
-``` bash 
-plt.figure(figsize=(10,8))
-sns.heatmap(df.corr(), annot=True)
+plt.title('Top 10 Products by Support')
+plt.ylabel('Support')
+plt.xlabel('Product Name')
+plt.show()
 ```
-![Alt text](output2.png) <br>
+![image](https://github.com/ebyy12/uasapri/assets/148988993/cd027210-3c21-4dde-949e-846b91cfcac6)
 
-- Mari lanjutkan dengan modeling.
+Kita bisa lihat frekwensi member dalam melakukan pembelian
+```bash
+member_shopping_frequency = df.groupby('Member_number')['Date'].count().sort_values(ascending=False)
+sns.distplot(member_shopping_frequency, bins=8, kde=False, color='skyblue')
+plt.xlabel('Number of purchasing')
+plt.ylabel('Number of Member')
+plt.title('member_shopping_frequency')
+plt.show()
+```
+![image](https://github.com/ebyy12/uasapri/assets/148988993/415c92c0-0978-4539-86e4-f8b72404b3e5)
+ Kita juga bisa mencarinya top pembelian
+ ```bash
+plt.figure(figsize=(25,10))
+sns.lineplot(x = df.itemDescription.value_counts().head(25).index, y = df.itemDescription.value_counts().head(25).values)
+plt.xlabel('Items', size = 15)
+plt.xticks(rotation=45)
+plt.ylabel('Count of Items', size = 15)
+plt.title('Top items purchased by members', color = 'green', size = 15)
+plt.show()
+```
+![image](https://github.com/ebyy12/uasapri/assets/148988993/747ffab5-791d-49c5-a7a6-a991e79b3e87)
+
 
 ## Modeling
 
