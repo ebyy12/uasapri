@@ -169,28 +169,37 @@ for i in range(0,len(df)-1):
     data = df['itemDescription'][i].split(',')
     lst.append(data)
 ```
+
+selanjutnya kita buat masing masing kolom item
+```bash
+te = TransactionEncoder()
+te_ary = te.fit(lst).transform(lst)
+df_new = pd.DataFrame(te_ary, columns=te.columns_)
+df_new
+```
+selanjutnya kita cek nilai support per item nya
+```bash
+frq_items = apriori(df_new, min_support=0.02,use_colnames=True)
+frq_items
+```
+![image](https://github.com/ebyy12/uasapri/assets/148988993/09a68e5d-2214-4969-9f28-ff1b46dba991)
+
+
+
 ## Evaluation
 
-Metrik yang digunakan yaitu metrik akurasi.
+Tidak ada pengecekan akurasi pada apriori, namun kita bisa lihat rules association
 
-- Matriks Akurasi (Accuracy Matrix) yang merupakan salah satu metode evaluasi yang digunakan dalam konteks klasifikasi (classification) untuk mengukur sejauh mana model klasifikasi mampu memprediksi dengan benar.
-
-## Library evaluasi
-``` bash
-from sklearn.metrics import confusion_matrix
-from sklearn.metrics import classification_report
-
-#Compute performance manually
-NewprediksiBenar = (predicted == Y_train).sum()
-NewprediksiSalah = (predicted != Y_train).sum()
-
-print("prediksi benar: ", NewprediksiBenar, " data")
-print("prediksi salah: ", NewprediksiSalah, " data")
-print("Akurasi Algoritme: ", NewprediksiBenar/(NewprediksiBenar+NewprediksiSalah)*100,"%") 
+```bash
+rules = association_rules(frq_items, metric = "confidence", min_threshold = 0.1)
+rules.sort_values('confidence', ascending = False, inplace = True)
+rules
 ```
+![Screenshot (94)](https://github.com/ebyy12/uasapri/assets/148988993/b2683a97-edd5-497a-8e5c-16ea0153a0d2)
+
+`
 
 ## Deployment
+[Streamlit](https://uasapri.streamlit.app/)
+![image](https://github.com/ebyy12/uasapri/assets/148988993/3074ae1b-5217-49f6-8a36-95cad9b6d2ea)
 
-https://github.com/ebyy12/Heart_Attack
-
-https://heartattack-dx6vbyqjvpt8b2zvspmtac.streamlit.app/
