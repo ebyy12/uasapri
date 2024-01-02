@@ -5,54 +5,42 @@
 ### Kelas : Pagi B
 
 ## Domain Proyek
-
-Prediksi serangan jantung adalah upaya untuk mengidentifikasi faktor-faktor risiko yang dapat meningkatkan kemungkinan seseorang mengalami serangan jantung di masa depan. Serangan jantung, juga dikenal sebagai infark miokard atau penyakit jantung koroner, terjadi ketika pasokan darah ke otot jantung terhenti atau berkurang secara signifikan, biasanya akibat penyumbatan arteri koroner. Prediksi serangan jantung melibatkan penilaian berbagai faktor risiko yang dapat meningkatkan kemungkinan seseorang mengembangkan penyakit jantung koroner.
+Apriori adalah algoritma untuk menambang itemset yang sering muncul dan pembelajaran aturan asosiasi pada basis data relasional. Algoritma ini berlanjut dengan mengidentifikasi item individual yang sering muncul dalam basis data dan memperluasnya ke set item yang lebih besar selama set tersebut muncul cukup sering dalam basis data. Itemset yang sering muncul yang ditentukan oleh Apriori dapat digunakan untuk menentukan aturan asosiasi yang menyoroti tren umum dalam basis data: ini memiliki aplikasi dalam domain seperti analisis keranjang pasar.
 
 ## Business Understanding
+Market Basket Analisys adalah salah satu teknik kunci yang digunakan oleh pengecer besar untuk mengungkapkan asosiasi antara barang. Ini bekerja dengan mencari kombinasi barang yang sering muncul bersama dalam transaksi. Dengan kata lain, ini memungkinkan pengecer untuk mengidentifikasi hubungan antara barang yang dibeli oleh orang.
 
-Untuk orang-orang yang ingin mengetahui sekumpulan data analisis dan prediksi serangan jantung.
+Aturan Asosiasi secara luas digunakan untuk menganalisis data keranjang belanja atau transaksi ritel dan dimaksudkan untuk mengidentifikasi aturan yang kuat yang ditemukan dalam data transaksi menggunakan ukuran ketertarikan, berdasarkan konsep aturan yang kuat.
 
 Bagian Laporan ini mencakup:
 
 ### Problem Statements
 
-Ketidakmungkinan bagi seseorang untuk mengetahui prediksi serangan jantung tanpa memprediksinya terlebih dahulu.
+Penjual item yang masif pada toko toko besar terkadang tidak terkontrol stok nya
 
 ### Goals
 
-- Membuat penelitian dalam studi prediksi serangan jantung.
+- Memudahkan menentukan stok berdasarkan barang cepat laku dan tidak laku
 
--  Membangun model prediktif berbasis logistik regresi yang memanfaatkan dataset "Heart Attack Analysis & Prediction" untuk mengidentifikasi faktor-faktor risiko utama yang berkontribusi terhadap serangan jantung.
+- Memudahkan menentukan diskon dan bundle paket penjualan
 
 ### Solution Statements
 
-- Pengembangan platform pencarian kumpulan data prediksi dalam Heart Attack Analysis & Prediction Dataset yang menintegrasikan data dari kaggle.com untuk memberikan pengguna akses cepat dan mudah ke informasi tentang Kumpulan Data Analisis dan Prediksi Serangan Jantung. Platform ini akan menyediakan antarmuka pengguna yang ramah.
+- Aturan Asosiasi secara luas digunakan untuk menganalisis data keranjang belanja atau transaksi ritel dan dimaksudkan untuk mengidentifikasi aturan yang kuat yang ditemukan dalam data transaksi menggunakan ukuran ketertarikan, berdasarkan konsep aturan yang kuat
 
-- Model yang dihasilkan dari dataset itu menggunakan metode Logistics Regression.
+- Apriori adalah algoritma untuk menambang itemset yang sering muncul dan pembelajaran aturan asosiasi pada basis data relasional
     
 
 ## Data Understanding
 
-Dataset yang saya gunakan berasal dari Kaggle yang berisi kumpulan data analisis dan prediksi serangan jantung. Dataset ini mengandung 303 baris dan memiliki 14 kolom setelah dilakukan pengecekan.
+Dataset ini memiliki 38.765 baris dari pesanan pembelian orang-orang dari toko kelontong. Pesanan ini dapat dianalisis, dan aturan asosiasi dapat dihasilkan menggunakan Analisis Keranjang Pasar dengan algoritma seperti Algoritma Apriori.
 
-[Heart Attack Analysis & Prediction]
-https://www.kaggle.com/datasets/rashikrahmanpritom/heart-attack-analysis-prediction-dataset
+[Dataset](https://www.kaggle.com/datasets/heeraldedhia/groceries-dataset/data)
 
 ### Variabel-variabel pada Heart Failure Prediction Dataset adalah sebagai berikut:
-- age       : Menunjukan usia pasien. [Tipe data: Int]
-- sex       : Menunjukan jenis kelamin pasien. [Tipe data: Int]
-- cp        : Menunjukan tipe nyeri dada tipe nyeri dada. [Tipe data: Int]
-- trtbps    : Menunjukan tekanan darah istirahat (dalam mm Hg). [Tipe data: Int]
-- chol      : Menunjukan kolesterol dalam mg/dl diambil melalui sensor BMI. [Tipe data: Int]
-- fbs       : (Menunjukan gula darah puasa>120 mg/dl) (1=benar; 0;salah). [Tipe data: Int]
-- restecg   : Menunjukan hasil elektrokardiografi istirahat. [Tipe data: Int]
-- thalachh  : Menunjukan detak jantung maksimum tercapai. [Tipe data: Int]
-- exng      :Menunjukan angina akibat olahraga (1 = ya;0 = tidak). [Tipe data: Int]
-- oldpeak   : Menunjukan puncak sebelumnya. [Tipe data: Float]
-- slp       : Menunjukan Lereng. [Tipe data: Int]
-- caa       : Menunjukan jumlah kapal besar (0-3). [Tipe data: Int]
-- thall     : Menunjukan tarifnya. [Tipe data: Int]
-- output    : Menunjukan variabel sasaran. [Tipe data: Int]
+- Member_number : Unique ID pada member dengan tipe data int
+- Date : Tanggal transaksi
+- itemDescription : Deskripsi Item
 
 ## Data Preparation
 
