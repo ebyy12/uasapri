@@ -30,7 +30,7 @@ def user_input_feature():
 
     return item, month, day
 
-month, day, item = user_input_feature()
+item, month, day = user_input_feature()
 
 data = get_data(month, day)
 
@@ -53,11 +53,6 @@ if type(data) != type("No Result"):
 
     rules = association_rules(frequent_items, metric=metric, min_threshold=min_treshold)[["antecedents", "consequents", "support", "confidence", "lift"]]
     rules.sort_values('confidence', ascending=False, inplace=True)
-if 'rules' in locals():
-    st.write("Generated Association Rules:")
-    st.write(rules)
-else:
-    st.warning("No rules generated. Please adjust your input criteria.")
 
 def parse_list(x):
     x = list(x)
